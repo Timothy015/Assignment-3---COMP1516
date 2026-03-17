@@ -12,9 +12,6 @@ def read_movies(file_name):
         print("The movie database does not exist")
         return []
 
-    except json.JSONDecodeError:
-        return []
-
 
 def write_movies(file_name, movies):
     """Collect Movie Data and Write a file"""
