@@ -12,13 +12,13 @@ def main():
     movies = file_io.read_movies(file_name)
 
     while True:
-        print("a - Add Movie"
-              "\nd - Delete Movie"
-              "\ns - View Movie Summary"
-              "\nr - Search by Rating"
-              "\nt - Search by Title"
-              "\ng - Search by Genre"
-              "\nq - Quit")
+        print("Add Movie (a)"
+              "\nDelete Movie (d)"
+              "\nView Movie Summary (s)"
+              "\nSearch by Rating (r)"
+              "\nSearch by Title (t)"
+              "\nSearch by Genre (g)"
+              "\nQuit (q)")
 
         option = input("Select an option: ").strip().lower()
 
