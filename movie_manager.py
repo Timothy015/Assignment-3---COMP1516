@@ -40,3 +40,4 @@ def delete_movie(file_name, movies):
             return
 
     print("Movie not Found!")
+
