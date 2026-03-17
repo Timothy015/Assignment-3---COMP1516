@@ -49,3 +49,19 @@ def view_summary(file_name):
     with open(file_name, 'r') as fh:
         summary = json.load(fh)
     print(summary)
+
+
+def rating_search():
+    """Searches JSON File by rating"""
+    pass
+
+
+def title_search():
+    """Searches JSON File by Title"""
+    pass
+
+
+def genre_search():
+    """Searches JSON file by Genre"""
+    pass
+

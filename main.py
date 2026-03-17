@@ -29,7 +29,7 @@ def main():
             movie_manager.delete_movie(file_name, movies)
 
         elif option == "s":
-            print("View Summary")
+            movie_manager.view_summary(file_name)
 
         elif option == "r":
             print("Search by Rating")
