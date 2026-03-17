@@ -1,3 +1,4 @@
+import json
 import file_io
 import re
 
@@ -41,3 +42,10 @@ def delete_movie(file_name, movies):
 
     print("Movie not Found!")
 
+
+def view_summary(file_name):
+    """Opens JSON file and prints to console"""
+
+    with open(file_name, 'r') as fh:
+        summary = json.load(fh)
+    print(summary)
