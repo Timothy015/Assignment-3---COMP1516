@@ -17,19 +17,25 @@ def add_movie(file_name, movies):
     if re.search(r"^[A-Z] ?[a-z]*$", genre) is None:
         raise ValueError("Genre is invalid")
 
-    length = input("Length (HH:MM): ")
-    if re.search(r"^[0-99]{2}:[0-59]{2}$", length) is None:
-        raise ValueError("Length must be HH:MM")
+    length = input("Running Length (HH:MM): ")
+    if re.search(r"^\d{2}:[0-5]\d$", length) is None:
+        raise ValueError("Length must be in HH:MM format (00-99:00-59)")
 
-    # Add Type Error Here
+    if re.search(r"^\d:\d+$", length) is None:
+        raise TypeError("Running length must be an integer")
 
     year = input("Year: ")
     if re.search(r"^\d{4}$", year) is None:
         raise ValueError("Year is invalid")
 
-    # Add Type Error Here
+    if re.search(r"^\d+$", year) is None:
+        raise TypeError("Year must be an integer")
 
-    rating = float(input("Rating: "))
+    try:
+        rating = float(input("Rating: "))
+    except ValueError:
+        raise ValueError("Rating must be a number")
+
     if rating < 0 or rating > 5:
         raise ValueError("Rating must be between 0 and 5")
 
