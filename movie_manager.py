@@ -21,9 +21,6 @@ def add_movie(file_name, movies):
     if re.search(r"^\d{2}:[0-5]\d$", length) is None:
         raise ValueError("Length must be in HH:MM format (00-99:00-59)")
 
-    if re.search(r"^\d:\d+$", length) is None:
-        raise TypeError("Running length must be an integer")
-
     year = input("Year: ")
     if re.search(r"^\d{4}$", year) is None:
         raise ValueError("Year is invalid")
@@ -59,17 +56,18 @@ def add_movie(file_name, movies):
     print("Movie added successfully")
 
 
-def delete_movie(movies):
+def delete_movie(file_name, movies):
     """Deletes Movie from JSON file"""
     movie_to_delete = input("Enter the name of the movie: ")
 
     is_deleted = False
     for movie in movies:
-        if movies["title"] == movie_to_delete:
+        if movie["title"].lower() == movie_to_delete.lower():
             movies.remove(movie)
             is_deleted = True
             break
     if is_deleted:
+        file_io.write_movies(file_name, movies)
         print("Movie Deleted")
     else:
         print("Movie not Found")
