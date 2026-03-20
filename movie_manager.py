@@ -6,7 +6,7 @@ import re
 def add_movie(file_name, movies):
     """Add Movies and check with the criteria"""
     title = input("Title: ")
-    if re.search(r"^[A-Z][a-z0-9]{1,32}$", title) is None:
+    if re.search(r"^[A-Za-z0-9]{1,32}$", title) is None:
         raise ValueError("Title must be no longer than 32 Characters")
 
     for movie in movies:
@@ -40,7 +40,7 @@ def add_movie(file_name, movies):
     if len(description) > 128:
         raise ValueError("Description must be 128 characters or less")
 
-    movie = {
+    new_movie = {
         "title": title,
         "genre": genre,
         "length": length,
@@ -49,7 +49,7 @@ def add_movie(file_name, movies):
         "description": description
     }
 
-    movies.append(movie)
+    movies.append(new_movie)
 
     file_io.write_movies(file_name, movies)
 
@@ -73,11 +73,8 @@ def delete_movie(file_name, movies):
         print("Movie not Found")
 
 
-def view_summary(file_name, movies):
+def view_summary(movies):
     """Opens JSON file and prints to console"""
-
-    with open(file_name, 'r') as fh:
-        movies = json.load(fh)
 
     if len(movies) == 0:
         print("No Movies Yet")
@@ -96,7 +93,7 @@ def view_summary(file_name, movies):
                 )
 
 
-def rating_search(file_name, movies):
+def rating_search(movies):
     """Searches JSON File by rating"""
     try:
         minimum_rating = int(input("Enter the rating: "))
