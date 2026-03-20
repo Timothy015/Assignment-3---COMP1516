@@ -1,4 +1,6 @@
 import json
+from xml.etree.ElementTree import indent
+
 import file_io
 import re
 
@@ -78,7 +80,20 @@ def view_summary(file_name):
 
     with open(file_name, 'r') as fh:
         summary = json.load(fh)
-    print(summary)
+
+    if len(summary) == 0:
+        print("No Movies Yet")
+
+    else:
+        for movie in summary:
+            print(f"""                  ===Movies===
+                Title:  {movie['title']}
+                Genre:  {movie['genre']}
+                Length: {movie['length']}
+                Year:   {movie['year']}
+                Rating: {movie['rating']}
+                Description: {movie['description']}
+                """)
 
 
 def rating_search():
