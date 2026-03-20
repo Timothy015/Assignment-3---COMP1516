@@ -29,10 +29,12 @@ def main():
             movie_manager.delete_movie(file_name, movies)
 
         elif option == "s":
-            movie_manager.view_summary(file_name, movies)
+            file_io.read_movies(file_name)
+            movie_manager.view_summary(movies)
 
         elif option == "r":
-            movie_manager.rating_search(file_name, movies)
+            file_io.read_movies(file_name)
+            movie_manager.rating_search(movies)
 
         elif option == "t":
             print("Search by title")
