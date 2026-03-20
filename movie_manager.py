@@ -1,6 +1,4 @@
 import json
-from xml.etree.ElementTree import indent
-
 import file_io
 import re
 
@@ -11,8 +9,8 @@ def add_movie(file_name, movies):
     if re.search(r"^[A-Z][a-z0-9]{1,32}$", title) is None:
         raise ValueError("Title must be no longer than 32 Characters")
 
-    for title in movies:
-        if movies["title"].lower() == title.lower():
+    for movie in movies:
+        if movie["title"].lower() == title.lower():
             raise ValueError("Movie already exists")
 
     genre = input("Genre: ")
@@ -31,12 +29,12 @@ def add_movie(file_name, movies):
         raise TypeError("Year must be an integer")
 
     try:
-        rating = float(input("Rating: "))
+        rating = int(input("Rating: "))
     except ValueError:
         raise ValueError("Rating must be a number")
 
-    if rating < 0 or rating > 5:
-        raise ValueError("Rating must be between 0 and 5")
+    if rating < 1 or rating > 5:
+        raise ValueError("Rating must be between 1 and 5")
 
     description = input("Description: ")
     if len(description) > 128:
@@ -75,30 +73,55 @@ def delete_movie(file_name, movies):
         print("Movie not Found")
 
 
-def view_summary(file_name):
+def view_summary(file_name, movies):
     """Opens JSON file and prints to console"""
 
     with open(file_name, 'r') as fh:
-        summary = json.load(fh)
+        movies = json.load(fh)
 
-    if len(summary) == 0:
+    if len(movies) == 0:
         print("No Movies Yet")
 
     else:
-        for movie in summary:
-            print(f"""                  ===Movies===
-                Title:  {movie['title']}
-                Genre:  {movie['genre']}
-                Length: {movie['length']}
-                Year:   {movie['year']}
-                Rating: {movie['rating']}
-                Description: {movie['description']}
-                """)
+        for movie in movies:
+            description = movie['description'][:30]
+
+            print(
+                f"Title: {movie['title']}, "
+                f"Genre: {movie['genre']}, "
+                f"Length: {movie['length']}, "
+                f"Year: {movie['year']}, "
+                f"Rating: {movie['rating']}, "
+                f"Description: {description}, "
+                )
 
 
-def rating_search():
+def rating_search(file_name, movies):
     """Searches JSON File by rating"""
-    pass
+    try:
+        minimum_rating = int(input("Enter the rating: "))
+    except ValueError:
+        raise ValueError("Rating must be a whole number")
+
+    if minimum_rating < 1 or minimum_rating > 5:
+        raise ValueError("Rating must be between 1 and 5")
+
+    found = False
+    for movie in movies:
+        if movie['rating'] >= minimum_rating:
+            found = True
+            description = movie['description'][:30]
+            print(
+                f"Title: {movie['title']}, "
+                f"Genre: {movie['genre']}, "
+                f"Length: {movie['length']}, "
+                f"Year: {movie['year']}, "
+                f"Rating: {movie['rating']}, "
+                f"Description: {description}, "
+            )
+
+    if not found:
+        print("No movies found with that rating")
 
 
 def title_search():
