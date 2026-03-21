@@ -1,4 +1,3 @@
-import json
 import file_io
 import re
 
@@ -6,7 +5,7 @@ import re
 def add_movie(file_name, movies):
     """Add Movies and check with the criteria"""
     title = input("Title: ")
-    if re.search(r"^[A-Za-z0-9]{1,32}$", title) is None:
+    if re.search(r"^[A-Za-z0-9 ]{1,32}$", title) is None:
         raise ValueError("Title must be no longer than 32 Characters")
 
     for movie in movies:
@@ -84,12 +83,12 @@ def view_summary(movies):
             description = movie['description'][:30]
 
             print(
-                f"Title: {movie['title']}, "
-                f"Genre: {movie['genre']}, "
-                f"Length: {movie['length']}, "
-                f"Year: {movie['year']}, "
-                f"Rating: {movie['rating']}, "
-                f"Description: {description}, "
+                f"Title: {movie['title']} "
+                f"Genre: {movie['genre']} "
+                f"Length: {movie['length']} "
+                f"Year: {movie['year']} "
+                f"Rating: {movie['rating']} "
+                f"Description: {description} "
                 )
 
 
@@ -109,12 +108,12 @@ def rating_search(movies):
             found = True
             description = movie['description'][:30]
             print(
-                f"Title: {movie['title']}, "
-                f"Genre: {movie['genre']}, "
-                f"Length: {movie['length']}, "
-                f"Year: {movie['year']}, "
-                f"Rating: {movie['rating']}, "
-                f"Description: {description}, "
+                f"Title: {movie['title']} "
+                f"Genre: {movie['genre']} "
+                f"Length: {movie['length']} "
+                f"Year: {movie['year']} "
+                f"Rating: {movie['rating']} "
+                f"Description: {description} "
             )
 
     if not found:
@@ -124,26 +123,42 @@ def rating_search(movies):
 def title_search(movies):
     """Searches JSON File by Title"""
 
-    title = input("Enter the Movie Title: ")
+    title = input("Enter the Movie Title: ").strip()
 
     found = False
     for movie in movies:
-        if movie["title"].lower() == title.lower():
+        if title.lower() in movie["title"].lower():
             found = True
-            description = movie['description'][:30]
             print(
-                f"Title: {movie['title']}, "
-                f"Genre: {movie['genre']}, "
-                f"Length: {movie['length']}, "
-                f"Year: {movie['year']}, "
-                f"Rating: {movie['rating']}, "
-                f"Description: {description}, "
+                f"Title: {movie['title']} "
+                f"Genre: {movie['genre']} "
+                f"Length: {movie['length']} "
+                f"Year: {movie['year']} "
+                f"Rating: {movie['rating']} "
+                f"Description: {movie["description"]} "
             )
 
     if not found:
         print("Movie not found")
 
 
-def genre_search():
+def genre_search(movies):
     """Searches JSON file by Genre"""
-    pass
+
+    genre = input("Enter the genre: ").strip()
+
+    found = False
+    for movie in movies:
+        if genre.lower() in movie["genre"].lower():
+            found = True
+            print(
+                f"Title: {movie['title']} "
+                f"Genre: {movie['genre']} "
+                f"Length: {movie['length']} "
+                f"Year: {movie['year']} "
+                f"Rating: {movie['rating']} "
+                f"Description: {movie['description']} "
+            )
+
+    if not found:
+        print("Movie not found")
