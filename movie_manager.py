@@ -3,18 +3,21 @@ import re
 
 
 def add_movie(file_name, movies):
-    """Add Movies and check with the criteria"""
+    """Prompts user to add a new movie
+    :param file_name: The JSON file name
+    :param movies: The current list of movies"""
+
     title = input("Title: ")
-    if re.search(r"^[A-Za-z0-9 ]{1,32}$", title) is None:
-        raise ValueError("Title must be no longer than 32 Characters")
+    if len(title) == 0 or len(title) > 32:
+        raise ValueError("Title must be 1-32 Characters")
 
     for movie in movies:
         if movie["title"].lower() == title.lower():
             raise ValueError("Movie already exists")
 
     genre = input("Genre: ")
-    if re.search(r"^[A-Z] ?[a-z]*$", genre) is None:
-        raise ValueError("Genre is invalid")
+    if not genre.strip() or re.search(r"^[A-Za-z ]+$", genre) is None:
+        raise ValueError("Genre must contain only letters and spaces")
 
     length = input("Running Length (HH:MM): ")
     if re.search(r"^\d{2}:[0-5]\d$", length) is None:
@@ -22,10 +25,10 @@ def add_movie(file_name, movies):
 
     year = input("Year: ")
     if re.search(r"^\d{4}$", year) is None:
-        raise ValueError("Year is invalid")
+        raise ValueError("Year must be 4 digits")
 
-    if re.search(r"^\d+$", year) is None:
-        raise TypeError("Year must be an integer")
+    if int(year) <= 1920:
+        raise ValueError("Year must be greater than 1920")
 
     try:
         rating = int(input("Rating: "))
@@ -36,7 +39,7 @@ def add_movie(file_name, movies):
         raise ValueError("Rating must be between 1 and 5")
 
     description = input("Description: ")
-    if len(description) > 128:
+    if len(description) == 0 or len(description) > 128:
         raise ValueError("Description must be 128 characters or less")
 
     new_movie = {
@@ -56,8 +59,14 @@ def add_movie(file_name, movies):
 
 
 def delete_movie(file_name, movies):
-    """Deletes Movie from JSON file"""
+    """Deletes a movie from the list based on title
+    :param file_name: The JSON file name
+    :param movies: The current list of movies"""
+
     movie_to_delete = input("Enter the name of the movie: ")
+
+    if len(movie_to_delete) == 0 or len(movie_to_delete) > 32:
+        raise ValueError("Title must be 1-32 characters")
 
     is_deleted = False
     for movie in movies:
@@ -73,7 +82,8 @@ def delete_movie(file_name, movies):
 
 
 def view_summary(movies):
-    """Opens JSON file and prints to console"""
+    """Displays a summary of all movies
+    :param movies: The list of movies"""
 
     if len(movies) == 0:
         print("No Movies Yet")
@@ -83,17 +93,19 @@ def view_summary(movies):
             description = movie['description'][:30]
 
             print(
-                f"Title: {movie['title']} "
-                f"Genre: {movie['genre']} "
-                f"Length: {movie['length']} "
-                f"Year: {movie['year']} "
-                f"Rating: {movie['rating']} "
-                f"Description: {description} "
-                )
+                f"Title:{movie['title']}, "
+                f"Genre:{movie['genre']}, "
+                f"Length:{movie['length']}, "
+                f"Year:{movie['year']}, "
+                f"Rating:{movie['rating']}, "
+                f"Description:{description} "
+            )
 
 
 def rating_search(movies):
-    """Searches JSON File by rating"""
+    """Searches for movies by minimum rating
+    :param movies: The list of movies"""
+
     try:
         minimum_rating = int(input("Enter the rating: "))
     except ValueError:
@@ -106,14 +118,13 @@ def rating_search(movies):
     for movie in movies:
         if movie['rating'] >= minimum_rating:
             found = True
-            description = movie['description'][:30]
             print(
-                f"Title: {movie['title']} "
-                f"Genre: {movie['genre']} "
-                f"Length: {movie['length']} "
-                f"Year: {movie['year']} "
-                f"Rating: {movie['rating']} "
-                f"Description: {description} "
+                f"Title:{movie['title']}, "
+                f"Genre:{movie['genre']}, "
+                f"Length:{movie['length']}, "
+                f"Year:{movie['year']}, "
+                f"Rating:{movie['rating']}, "
+                f"Description:{movie['description']} "
             )
 
     if not found:
@@ -121,7 +132,9 @@ def rating_search(movies):
 
 
 def title_search(movies):
-    """Searches JSON File by Title"""
+    """Searches for movies by Title
+    The search is case-insensitive and allows partial matches
+    :param movies: The list of movies"""
 
     title = input("Enter the Movie Title: ").strip()
 
@@ -130,12 +143,12 @@ def title_search(movies):
         if title.lower() in movie["title"].lower():
             found = True
             print(
-                f"Title: {movie['title']} "
-                f"Genre: {movie['genre']} "
-                f"Length: {movie['length']} "
-                f"Year: {movie['year']} "
-                f"Rating: {movie['rating']} "
-                f"Description: {movie["description"]} "
+                f"Title:{movie['title']}, "
+                f"Genre:{movie['genre']}, "
+                f"Length:{movie['length']}, "
+                f"Year:{movie['year']}, "
+                f"Rating:{movie['rating']}, "
+                f"Description:{movie['description']} "
             )
 
     if not found:
@@ -143,21 +156,27 @@ def title_search(movies):
 
 
 def genre_search(movies):
-    """Searches JSON file by Genre"""
+    """Searches for movies by Genre
+    The search is case-sensitive and allows partial matches
+    :param movies: The list of movies"""
 
     genre = input("Enter the genre: ").strip()
 
+    if not genre:
+        raise ValueError("Genre cannot be empty")
+
     found = False
+
     for movie in movies:
-        if genre.lower() in movie["genre"].lower():
+        if genre in movie["genre"]:
             found = True
             print(
-                f"Title: {movie['title']} "
-                f"Genre: {movie['genre']} "
-                f"Length: {movie['length']} "
-                f"Year: {movie['year']} "
-                f"Rating: {movie['rating']} "
-                f"Description: {movie['description']} "
+                f"Title:{movie['title']}, "
+                f"Genre:{movie['genre']}, "
+                f"Length:{movie['length']}, "
+                f"Year:{movie['year']}, "
+                f"Rating:{movie['rating']}, "
+                f"Description:{movie['description']} "
             )
 
     if not found:
