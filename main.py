@@ -4,6 +4,10 @@ import movie_manager
 
 
 def main():
+    """Runs Movie Manager
+    Handles command line arguments, displays the menu,
+    and processes user input until the user quits"""
+
     if len(sys.argv) != 2:
         print("Usage: python movie_manager.py movie.json")
         return
@@ -21,30 +25,38 @@ def main():
               "\nQuit (q)")
 
         option = input("Select an option: ").strip().lower()
+        try:
+            if option == "a":
+                movie_manager.add_movie(file_name, movies)
 
-        if option == "a":
-            movie_manager.add_movie(file_name, movies)
+            elif option == "d":
+                movie_manager.delete_movie(file_name, movies)
 
-        elif option == "d":
-            movie_manager.delete_movie(file_name, movies)
+            elif option == "s":
+                movies = file_io.read_movies(file_name)
+                movie_manager.view_summary(movies)
 
-        elif option == "s":
-            file_io.read_movies(file_name)
-            movie_manager.view_summary(movies)
+            elif option == "r":
+                movies = file_io.read_movies(file_name)
+                movie_manager.rating_search(movies)
 
-        elif option == "r":
-            file_io.read_movies(file_name)
-            movie_manager.rating_search(movies)
+            elif option == "t":
+                movies = file_io.read_movies(file_name)
+                movie_manager.title_search(movies)
 
-        elif option == "t":
-            print("Search by title")
+            elif option == "g":
+                movies = file_io.read_movies(file_name)
+                movie_manager.genre_search(movies)
 
-        elif option == "g":
-            print("Search by Genre")
+            elif option == "q":
+                print("You've exited the program")
+                break
 
-        elif option == "q":
-            print("You've exited the program")
-            break
+            else:
+                print("Invalid option. Please try again.")
+
+        except ValueError as e:
+            print(f"Error: {e}")
 
 
 if __name__ == "__main__":
