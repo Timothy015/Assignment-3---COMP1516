@@ -121,9 +121,27 @@ def rating_search(movies):
         print("No movies found with that rating")
 
 
-def title_search():
+def title_search(movies):
     """Searches JSON File by Title"""
-    pass
+
+    title = input("Enter the Movie Title: ")
+
+    found = False
+    for movie in movies:
+        if movie["title"].lower() == title.lower():
+            found = True
+            description = movie['description'][:30]
+            print(
+                f"Title: {movie['title']}, "
+                f"Genre: {movie['genre']}, "
+                f"Length: {movie['length']}, "
+                f"Year: {movie['year']}, "
+                f"Rating: {movie['rating']}, "
+                f"Description: {description}, "
+            )
+
+    if not found:
+        print("Movie not found")
 
 
 def genre_search():
